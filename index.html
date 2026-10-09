@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoja de Vida - Anamaría Gómez Landínez</title>
+    <style>
+        /* --- ESTILOS GLOBALES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #f4f6f9;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* --- BARRA LATERAL (MENÚ) --- */
+        .sidebar {
+            width: 280px;
+            background-color: #1e293b;
+            color: #fff;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            height: 100vh;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* Ajuste de tamaño de la imagen: ahora más grande */
+        .profile-img-container {
+            width: 180px;6
+            height: 240px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid #3b82f6;
+            margin-bottom: 20px;
+            background-color: #cbd5e1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-info h2 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #f8fafc;
+        }
+
+        .profile-info p {
+            font-size: 0.95rem;
+            color: #94a3b8;
+        }
+
+        .nav-buttons {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            width: 100%;
+            padding: 12px 15px;
+            background: none;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            text-align: left;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background-color: #3b82f6;
+            color: #fff;
+            border-color: #3b82f6;
+            transform: translateX(5px);
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1000px;
+            width: calc(100% - 280px);
+        }
+
+        /* --- SECCIONES DINÁMICAS --- */
+        .section-panel {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #0f172a;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        /* Tarjetas de Datos */
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .card h3 {
+            color: #1e293b;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .card .institution {
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .card .date-place {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        .card ul {
+            margin-left: 20px;
+            color: #475569;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .card ul li {
+            margin-bottom: 6px;
+        }
+
+        /* Contacto e Información Básica */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .contact-item {
+            background: #e2e8f0;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .contact-item strong {
+            color: #1e293b;
+            display: block;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background-color: #eff6ff;
+            color: #1d4ed8;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Grid para Referencias */
+        .references-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MENÚ LATERAL INTERACTIVO -->
+    <div class="sidebar">
+        <div class="profile-img-container">
+            <!-- Buscará 'imagen.jpg' en la misma carpeta -->
+            <img src="imagen.png" alt="Foto de Anamaría Gómez" onerror="this.src='https://via.placeholder.com/180?text=Foto+CV'">
+        </div>
+        <div class="profile-info">
+            <h2>Anamaría Gómez L.</h2>
+            <p>Contadora Pública</p>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-btn active" onclick="showSection('inicio')">PERFIL</button>
+            <button class="nav-btn" onclick="showSection('estudios')">ESTUDIOS</button>
+            <button class="nav-btn" onclick="showSection('experiencia')">EXPERIENCIA LABORAL</button>
+            <button class="nav-btn" onclick="showSection('ref-laborales')">REFERENCIAS LABORALES</button>
+            <button class="nav-btn" onclick="showSection('ref-personales')">REFERENCIAS PERSONALES</button>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR DE CONTENIDO DINÁMICO -->
+    <div class="main-content">
+
+        <!-- SECCIÓN: INICIO / PERFIL -->
+        <div id="inicio" class="section-panel active">
+            <h1>Anamaría Gómez Landínez</h1>
+            <p class="subtitle">Contadora Pública | T.P 238080-T</p>
+            
+            <div class="contact-grid">
+                <div class="contact-item"><strong>Cédula:</strong> C.C 1.075.670.566</div>
+                <div class="contact-item"><strong>Teléfono:</strong> 300 440 21 72</div>
+                <div class="contact-item"><strong>Email:</strong> nanita0919@gmail.com</div>
+                <div class="contact-item"><strong>Ubicación:</strong> Zipaquirá, Cundinamarca</div>
+            </div>
+
+            <div class="card">
+                <h3>Perfil Profesional</h3>
+                <p style="line-height: 1.6; color: #475569; font-size: 0.95rem; margin-top: 10px;">
+                    Contador Público titulado, con diplomado en normas internacionales de auditoría y aseguramiento NIAS, diplomado en normas internacionales de información financiera NIIF. Experiencia laboral en el campo de la contaduría pública, auditoría integral y financiera de empresas del sector de economía solidaria y sector privado; desarrollo de auditoría desde la planeación, implementación de sistemas de riesgos (SARC-SARL-SARO-SIAR), hasta la emisión de informes.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Sistemas y Programas Manejados</h3>
+                <div class="tags-container">
+                    <span class="tag">SAP</span><span class="tag">LINIX</span><span class="tag">Syscom</span>
+                    <span class="tag">OPA</span><span class="tag">Excel Profesional</span><span class="tag">Word Office</span>
+                    <span class="tag">Área Contable</span><span class="tag">PowerPoint</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: ESTUDIOS -->
+        <div id="estudios" class="section-panel">
+            <h1>Formación Académica</h1>
+            <p class="subtitle">Estudios y Diplomados Realizados</p>
+
+            <div class="card">
+                <h3>Contadora Pública</h3>
+                <p class="institution">Fundación Universitaria Agraria de Colombia</p>
+                <p class="date-place">2017 | Bogotá</p>
+            </div>
+
+            <div class="card">
+                <h3>Diplomado en Revisoria Fiscal</h3>
+                <p class="institution">Politécnico de Colombia</p>
+                <p class="date-place">2022 | Bogotá</p>
+            </div>
+
+            <div class="card">
+                <h3>Diplomado en Sarlaft y Riesgos</h3>
+                <p class="institution">CESA - Colegio de Estudios Superiores de Administración</p>
+                <p class="date-place">2017 | Bogotá</p>
+            </div>
+
+            <div class="card">
+                <h3>Diplomado en Normas Internacionales de Auditoría y Aseguramiento (NIAS)</h3>
+                <p class="institution">Uniagraria - London School Business & Finance</p>
+                <p class="date-place">2016 | Bogotá</p>
+            </div>
+
+            <div class="card">
+                <h3>Diplomado en Normas Internacionales de Información Financiera (NIIF)</h3>
+                <p class="institution">Politécnico de Colombia</p>
+                <p class="date-place">2016 | Bogotá</p>
+            </div>
+
+            <div class="card">
+                <h3>Otros Cursos y Actualizaciones</h3>
+                <ul>
+                    <li>Curso actualización reforma tributaria 2023 - Diego Guevara.</li>
+                    <li>Profundización laboral - Accounter (2022).</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: EXPERIENCIA LABORAL -->
+        <div id="experiencia" class="section-panel">
+            <h1>Experiencia Laboral</h1>
+            <p class="subtitle">Historial de Cargos y Funciones Desempeñadas</p>
+
+            <div class="card">
+                <h3>Directora Administrativa y Financiera</h3>
+                <p class="institution">Empresa de Servicios de Tránsito de Zipaquirá</p>
+                <p class="date-place">Diciembre 2024 - Actualmente | Zipaquirá</p>
+                <ul>
+                    <li>Realizar la contabilidad, estados financieros mensuales, semestrales y anuales.</li>
+                    <li>Estudiar programas de desarrollo y preparar proyectos de presupuesto para la Junta Directiva.</li>
+                    <li>Elaborar impuestos nacionales y distritales; gestión de nómina quincenal.</li>
+                    <li>Dirigir, supervisar la presentación de servicios y coordinar las relaciones públicas con asociados.</li>
+                    <li>Encargada integral del personal de la entidad.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Revisor Fiscal</h3>
+                <p class="institution">OFQ Auditores SAS</p>
+                <p class="date-place">Febrero 2024 - Mayo 2025 | Bogotá</p>
+                <ul>
+                    <li>Enfoque y análisis de pruebas de auditoría delegadas bajo el plan de trabajo establecido.</li>
+                    <li>Revisión y firma de estados financieros e impuestos nacionales, distritales y municipales.</li>
+                    <li>Verificación de sistemas, procedimientos de dirección y cumplimiento de encargos normativos.</li>
+                    <li>Implementación de NIIF y sistemas de riesgos (SARC, SARL, SARO, SIAR) en el sector solidario.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Revisor Fiscal</h3>
+                <p class="institution">Cooperativa de Campesinos de Cogua</p>
+                <p class="date-place">Mayo 2023 - Mayo 2025 | Cogua / Bogotá</p>
+                <ul>
+                    <li>Análisis exhaustivo de pruebas de auditoría e informe oportuno de hallazgos determinados.</li>
+                    <li>Revisión de estados financieros y firmas de obligaciones tributarias.</li>
+                    <li>Determinación de la situación razonable de los balances de acuerdo con los principios contables.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Contador</h3>
+                <p class="institution">Hocus Pocus Sensory Magic</p>
+                <p class="date-place">Enero 2020 - Mayo 2022 | Zipaquirá</p>
+                <ul>
+                    <li>Ejecución de la contabilidad mensual, semestral y anual de la institución.</li>
+                    <li>Cálculo de nómina, liquidaciones, pagos y emisión de informes mensuales de gestión.</li>
+                    <li>Establecimiento de procedimientos de información financiera y asesoría tributaria continua.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Director Financiero y Gerente Administrativo</h3>
+                <p class="institution">Transcolvolcos SAS</p>
+                <p class="date-place">Septiembre 2018 - Diciembre 2019 | Zipaquirá</p>
+                <ul>
+                    <li>Preparación de presupuestos, estructuración de impuestos y balances firmados ante Junta Directiva.</li>
+                    <li>Gestión de nómina quincenal, pago de seguridad social y administración directa del personal.</li>
+                    <li>Implementación del sistema internacional de seguridad comercial BASC.</li>
+                    <li>Ejecución de políticas de control de riesgos obligatorios del sector (SARC-SARL-SARO-SIAR).</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Auditor Financiero</h3>
+                <p class="institution">Opine SAS (Sector Financiero)</p>
+                <p class="date-place">Julio 2016 - Septiembre 2018 | Bogotá</p>
+                <ul>
+                    <li>Ejecución del plan de auditoría para sustentar dictámenes del Revisor Fiscal corporativo.</li>
+                    <li>Validación técnica del balance general bajo principios de contabilidad generalmente aceptados.</li>
+                    <li>Monitoreo de sistemas de prevención y riesgos operativos institucionales.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Asistente Administrativa</h3>
+                <p class="institution">Jailam Laboratorios</p>
+                <p class="date-place">Junio 2014 - Junio 2016 | Bogotá</p>
+                <ul>
+                    <li>Elaboración de nóminas, manejo de afiliaciones a seguridad social y causaciones contables.</li>
+                    <li>Control operativo de facturación de servicios, manejo de inventarios y trámites bancarios.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: REFERENCIAS LABORALES -->
+        <div id="ref-laborales" class="section-panel">
+            <h1>Referencias Laborales</h1>
+            <p class="subtitle">Contactos Profesionales de Respaldo</p>
+            
+            <div class="references-grid">
+                <div class="card">
+                    <h3>Yolanda Bermúdez Zamora</h3>
+                    <p class="institution">Opine SAS</p>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 8px;">Cargo: Revisor Fiscal</p>
+                    <p><strong>Teléfono:</strong> 310 769 85 95</p>
+                </div>
+
+                <div class="card">
+                    <h3>Jorge Orjuela Torres</h3>
+                    <p class="institution">Transcolvolcos SAS</p>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 8px;">Cargo: Representante Legal</p>
+                    <p><strong>Teléfono:</strong> 311 811 04 88</p>
+                </div>
+
+                <div class="card">
+                    <h3>Diana Lorena Suárez Gómez</h3>
+                    <p class="institution">Hocus Pocus Sensory Magic</p>
+                    <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 8px;">Cargo: Gerente</p>
+                    <p><strong>Teléfono:</strong> 321 472 05 35</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: REFERENCIAS PERSONALES -->
+        <div id="ref-personales" class="section-panel">
+            <h1>Referencias Personales</h1>
+            <p class="subtitle">Garantías Personales y de Confianza</p>
+
+            <div class="references-grid">
+                <div class="card">
+                    <h3>María Fernanda Ruiz Colorado</h3>
+                    <p class="institution">Profesión: Contadora</p>
+                    <p><strong>Teléfono:</strong> 316 625 45 16</p>
+                </div>
+
+                <div class="card">
+                    <h3>Aleida Díaz</h3>
+                    <p class="institution">Profesión: Contador - Gerente Fiduciaria Colpatria</p>
+                    <p><strong>Teléfono:</strong> 311 287 89 59</p>
+                </div>
+
+                <div class="card">
+                    <h3>Daniel Gómez</h3>
+                    <p class="institution">Profesión: Director Administrativo</p>
+                    <p><strong>Teléfono:</strong> 321 472 03 94</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- --- LÓGICA JAVASCRIPT --- -->
+    <script>
+        function showSection(sectionId) {
+            const panels = document.querySelectorAll('.section-panel');
+            panels.forEach(panel => {
+                panel.classList.remove('active');
+            });
+
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            const targetPanel = document.getElementById(sectionId);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick').includes(sectionId)) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+    </script>
+    
+</body>
+</html>
